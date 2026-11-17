@@ -1,0 +1,71 @@
+"""
+Title: EEG Signal Processing & BCI Foundations Pipeline
+Author: Abdullah Saleem (abdullahsalim1408@gmail.com)
+Course Code: ANPP-OP | Diploma in Cloud Cyber Security
+"""
+
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import mne
+
+# 1. Dataset Acquisition: Load a smaller public EEG dataset
+print("[*] Downloading / Loading public EEG dataset...")
+
+eegbci_files = mne.datasets.eegbci.load_data(
+    1,
+    [6]
+)
+
+raw = mne.io.read_raw_edf(
+    eegbci_files[0],
+    preload=True,
+    verbose=False
+)
+
+mne.datasets.eegbci.standardize(raw)
+raw.pick_types(eeg=True, exclude="bads")
+raw.crop(tmin=0.0, tmax=30.0)
+
+print(
+    f"[+] Loaded EEG Data: {len(raw.ch_names)} channels, "
+    f"Sampling Rate: {raw.info['sfreq']} Hz"
+)
+
+# 2. Signal Processing: Bandpass Filtering (1 Hz to 40 Hz)
+# Filters out low-frequency drifts (sweat/movement artifacts) and high-frequency noise (line noise).
+print("[*] Applying Bandpass Filter (1.0 - 40.0 Hz)...")
+filtered_raw = raw.copy().filter(l_freq=1.0, h_freq=40.0, fir_design='firwin', verbose=False)
+
+# 3. Visualization: Plot Raw vs Filtered Signals & Save Output
+os.makedirs('outputs', exist_ok=True)
+
+fig_raw = raw.plot(duration=5.0, n_channels=5, scalings='auto', title='Raw EEG Signals', show=False)
+fig_raw.savefig('outputs/eeg_raw_signal.png', dpi=300)
+plt.close(fig_raw)
+
+fig_filtered = filtered_raw.plot(duration=5.0, n_channels=5, scalings='auto', title='Filtered EEG Signals (1-40 Hz)', show=False)
+fig_filtered.savefig('outputs/eeg_filtered_signal.png', dpi=300)
+plt.close(fig_filtered)
+print("[+] Visualizations saved in 'outputs/' directory.")
+
+# 4. Feature Extraction: Compute Power Spectral Density (PSD)
+print("[*] Extracting Power Spectral Density (PSD) features...")
+psds, freqs = mne.time_frequency.psd_array_multitaper(
+    filtered_raw.get_data(), 
+    sfreq=filtered_raw.info['sfreq'], 
+    fmin=1.0, 
+    fmax=40.0, 
+    verbose=False
+)
+
+# Calculate mean power per frequency band
+# Delta (1-4 Hz), Theta (4-8 Hz), Alpha (8-13 Hz), Beta (13-30 Hz)
+mean_psd = np.mean(psds, axis=0)
+
+print("\n--- Feature Extraction Summary (Mean Power per Band) ---")
+print(f"Delta Band (1-4 Hz):   {np.mean(mean_psd[(freqs >= 1) & (freqs <= 4)]):.4f} uV^2/Hz")
+print(f"Theta Band (4-8 Hz):   {np.mean(mean_psd[(freqs >= 4) & (freqs <= 8)]):.4f} uV^2/Hz")
+print(f"Alpha Band (8-13 Hz):  {np.mean(mean_psd[(freqs >= 8) & (freqs <= 13)]):.4f} uV^2/Hz")
+print(f"Beta Band (13-30 Hz):  {np.mean(mean_psd[(freqs >= 13) & (freqs <= 30)]):.4f} uV^2/Hz")
+print("\n[+] Pipeline execution completed successfully!")
