@@ -1,7 +1,3 @@
-
-5. Visualize original and filtered EEG signals.
-6. Calculate Mu (8–13 Hz) and Beta (13–30 Hz) band power.
-7. Extract features from left- and right-imagery trials.
 # BCI EEG Signal Processing and Motor Imagery Classification
 
 ## 1. Project Overview
