@@ -1,0 +1,19 @@
+Channel,Event,Band,Average power (uV^2)
+C3..,Rest,Mu (8-13 Hz),17.0742
+C3..,Left imagery,Mu (8-13 Hz),13.1024
+C3..,Right imagery,Mu (8-13 Hz),13.7734
+C3..,Rest,Beta (13-30 Hz),56.1046
+C3..,Left imagery,Beta (13-30 Hz),38.8936
+C3..,Right imagery,Beta (13-30 Hz),38.5024
+Cz..,Rest,Mu (8-13 Hz),14.2274
+Cz..,Left imagery,Mu (8-13 Hz),13.885
+Cz..,Right imagery,Mu (8-13 Hz),12.2423
+Cz..,Rest,Beta (13-30 Hz),46.4444
+Cz..,Left imagery,Beta (13-30 Hz),31.5819
+Cz..,Right imagery,Beta (13-30 Hz),25.9379
+C4..,Rest,Mu (8-13 Hz),12.2613
+C4..,Left imagery,Mu (8-13 Hz),11.6749
+C4..,Right imagery,Mu (8-13 Hz),11.0458
+C4..,Rest,Beta (13-30 Hz),43.6382
+C4..,Left imagery,Beta (13-30 Hz),33.4091
+C4..,Right imagery,Beta (13-30 Hz),27.7485
