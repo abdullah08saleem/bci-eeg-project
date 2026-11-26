@@ -1,0 +1,16 @@
+MOTOR IMAGERY CLASSIFICATION
+============================
+Recording: S006R04.edf
+Channels: C3.., Cz.., C4..
+Number of trials: 15
+Validation: Leave-One-Trial-Out
+Accuracy: 53.33%
+
+               precision    recall  f1-score   support
+
+ Left imagery       0.57      0.50      0.53         8
+Right imagery       0.50      0.57      0.53         7
+
+     accuracy                           0.53        15
+    macro avg       0.54      0.54      0.53        15
+ weighted avg       0.54      0.53      0.53        15
